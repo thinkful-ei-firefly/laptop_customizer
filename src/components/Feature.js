@@ -1,15 +1,24 @@
 import React from 'react';
+import Selected from './Selected';
 
 function Feature(props) {
-    return (
-        <div className={props.featureClass}
-                  
-                  onClick={e => props.updateFeature(props.notAKey, props.item)}>
-                    { props.item.name }
-                    ({ new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD'})
-                      .format(props.item.cost) })
-                </div>
-    )
+  return (
+    Object.keys(props.features).map(key => {
+      return (
+        <div className="feature" key={key}>
+          <div className="feature__name">{key}</div>
+          <ul className="feature__list">
+            <Selected
+              features={props.features}
+              feature={key}
+              selected={props.selected}
+              updateFeature={props.updateFeature}
+            />
+          </ul>
+        </div>
+      );
+    })
+  );
 }
 
-export default Feature
+export default Feature;
