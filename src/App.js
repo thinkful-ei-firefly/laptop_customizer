@@ -3,6 +3,8 @@ import './App.css';
 import Header from './Header';
 import Specs from './Specs';
 import Summary from './Summary';
+import Feature from './Feature';
+import SubSummary from './SubSummary'
 
 class App extends Component {
   constructor(props){
@@ -29,7 +31,7 @@ class App extends Component {
     }
   }
 
-  updateFeature(feature, newValue) {
+  updateFeature = (feature, newValue) => {
     const selected = Object.assign({}, this.state.selected);
     selected[feature] = newValue;
     this.setState({
@@ -39,14 +41,11 @@ class App extends Component {
 
   render() {
     const summary = Object.keys(this.state.selected)
-          .map(key => <div className="summary__option" key={key}>
-            <div className="summary__option__label">{key}  </div>
-            <div className="summary__option__value">{this.state.selected[key].name}</div>
-            <div className="summary__option__cost">
-              { new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD'})
-                  .format(this.state.selected[key].cost) }
-            </div>
-        </div>)
+          .map(key => <SubSummary
+            key={key} 
+            notAKey={key} 
+            name={this.state.selected[key].name} 
+            cost={this.state.selected[key].cost} />)
 
     const total = Object.keys(this.state.selected)
           .reduce((acc, curr) => acc + this.state.selected[curr].cost, 0);    
@@ -57,15 +56,18 @@ class App extends Component {
             const options = this.props.features[key].map((item, index) => {
               const selectedClass = item.name === this.state.selected[key].name ? 'feature__selected' : '';
               const featureClass = 'feature__option ' + selectedClass;
-              return <li key={index} className="feature__item">
-                <div className={featureClass}
-                  
-                  onClick={e => this.updateFeature(key, item)}>
-                    { item.name }
-                    ({ new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD'})
-                      .format(item.cost) })
-                </div>
-              </li>
+              return (
+              <li key={index} className="feature__item">
+              <Feature
+                  key={key}
+                  notAKey={key}
+                  index={index}
+                  item={item}
+                  featureClass={featureClass} 
+                  updateFeature={this.updateFeature}
+                  />
+                  </li>
+              )
             });
 
             return <div className="feature" key={key}>
