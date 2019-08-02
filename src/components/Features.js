@@ -1,7 +1,7 @@
 import React from 'react';
 import Selected from './Selected';
 
-function Feature(props) {
+function Features(props) {
   return (
     Object.keys(props.features).map(key => {
       return (
@@ -21,4 +21,4 @@ function Feature(props) {
   );
 }
 
-export default Feature;
+export default Features;
